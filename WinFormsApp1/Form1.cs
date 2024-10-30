@@ -31,7 +31,6 @@ namespace WinFormsApp1
                 {
                     //Get the path of specified file
                     filePath = openFileDialog.FileName;
-                    filePath = filePath.Insert(filePath.IndexOf('.'),"_Clear");
 
                     //Read the contents of the file into a stream
                     var fileStream = openFileDialog.OpenFile();
