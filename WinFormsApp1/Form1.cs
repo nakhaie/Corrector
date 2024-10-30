@@ -1,17 +1,10 @@
-using System.Runtime.InteropServices;
-using System.IO;
-using CsvHelper;
 using System.Diagnostics;
-using System.Globalization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WinFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class Form : System.Windows.Forms.Form
     {
-        public List<AssetName> assetObjects = [];
-
-        public Form1()
+        public Form()
         {
             InitializeComponent();
         }
@@ -31,6 +24,7 @@ namespace WinFormsApp1
                 {
                     //Get the path of specified file
                     filePath = openFileDialog.FileName;
+                    filePath = filePath.Insert(filePath.IndexOf('.'), "_Fixed");
 
                     //Read the contents of the file into a stream
                     var fileStream = openFileDialog.OpenFile();
@@ -44,6 +38,29 @@ namespace WinFormsApp1
 
         private void ClearText(Stream stream, string clonePath)
         {
+            string ItemRead;
+            Dictionary<string, List<AssetName>> tempDomains = new Dictionary<string, List<AssetName>>();
+            List<string> Keys = new List<string>();
+
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                while ((ItemRead = reader.ReadLine()) != null)
+                {
+                    if (string.IsNullOrEmpty(ItemRead) || string.IsNullOrWhiteSpace(ItemRead))
+                        continue;
+
+                    string[] itemArray = ItemRead.Split(',');
+
+                    if (!tempDomains.ContainsKey(itemArray[1]))
+                    {
+                        tempDomains.Add(itemArray[1], new List<AssetName>());
+                        Keys.Add(itemArray[1]);
+                    }
+
+                    tempDomains[itemArray[1]].Add(new AssetName(itemArray[0], itemArray[2], itemArray[3], itemArray[4]));
+                }
+            }
+
             if (!File.Exists(clonePath))
             {
                 // Create a file to write to.
@@ -53,86 +70,51 @@ namespace WinFormsApp1
             // Open the file to read from.
             using (StreamWriter sr = new StreamWriter(clonePath))
             {
-                sr.Write("AssetType,Domain,Prefix,Suffix,Example\n");
-                string txt = "";
-                string item = "";
-                int count = 0;
+                string ItemOpend = "{";
+                string domainForm = "\"{0}\", new List<AssetName>";
+                string domainOpend = "  {";
+                string assetOpend = "       {";
+                string assetForm = "new AssetName(\"{0}\",\"{1}\",\"{2}\",\"{3}\")";
+                string assetClosed = "},";
+                string ItemClosed = "  }\n},";
 
-                using (StreamReader reader = new StreamReader(stream))
+                sr.Write("");
+
+                foreach (string key in Keys)
                 {
-                    while ((txt = reader.ReadLine()) != null)
+                    sr.WriteLine(ItemOpend + string.Format(domainForm, key));
+                    sr.WriteLine(domainOpend);
+
+                    foreach (var item in tempDomains[key])
                     {
-                        if (string.IsNullOrEmpty(txt) || string.IsNullOrWhiteSpace(txt))
-                            continue;
-
-                        if (txt.StartsWith("<p") || !txt.StartsWith("<"))
-                        {
-                            if(!txt.StartsWith("<path"))
-                            {
-                                txt = txt.Remove(0, txt.IndexOf(">") + 1);
-
-                                switch(txt)
-                                {
-                                    case "Example":
-                                        continue;
-                                    case "Prefix":
-                                        continue;
-                                    case "Suffix":
-                                        continue;
-                                }
-
-                                if (count < 4)
-                                {
-                                    item += $"{txt},";
-                                    count++;
-                                }
-                                else
-                                {
-                                    item += $"{txt}";
-                                    sr.WriteLine(item);
-                                    item = string.Empty;
-                                    count = 0;
-                                }
-                            }
-                        }
+                        sr.WriteLine(assetOpend
+                            + string.Format(assetForm, item.AssetType, item.Prefix, item.Suffix, item.Example)
+                            + assetClosed);
                     }
+
+
+                    sr.WriteLine(ItemClosed);
                 }
             }
 
             Process.Start("notepad.exe", clonePath);
         }
 
-        private void MakeSheet(string filePath)
-        {
-            using (StreamReader reader = new StreamReader(filePath))
-            {
-                string txt = "";
-                while ((txt = reader.ReadLine()) != null)
-                {
-                    if (string.IsNullOrEmpty(txt) || string.IsNullOrWhiteSpace(txt))
-                        continue;
-
-                    
-                }
-            }
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            label1.Text = OpenFileDialog();
-            assetObjects.Add(new AssetName());
-
+            textBox1.Text = OpenFileDialog();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
         }
 
-        public bool TextValidation(string txt)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
-            return true;
         }
     }
 }
