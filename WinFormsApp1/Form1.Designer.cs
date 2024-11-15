@@ -65,13 +65,16 @@
             comboBox1 = new ComboBox();
             textBox2 = new TextBox();
             label3 = new Label();
-            textBox3 = new TextBox();
+            VerText = new TextBox();
             ExceptionLabel = new Label();
-            textBox4 = new TextBox();
-            panel2 = new Panel();
+            ExBox = new TextBox();
+            ExPanel = new Panel();
             NameField = new Label();
+            button2 = new Button();
+            label2 = new Label();
+            label4 = new Label();
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
+            ExPanel.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -130,6 +133,7 @@
             listBox1.Size = new Size(579, 277);
             listBox1.Sorted = true;
             listBox1.TabIndex = 2;
+            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // comboBox1
             // 
@@ -145,7 +149,7 @@
             // textBox2
             // 
             textBox2.Cursor = Cursors.IBeam;
-            textBox2.Location = new Point(12, 70);
+            textBox2.Location = new Point(75, 70);
             textBox2.MaxLength = 32;
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(243, 23);
@@ -156,20 +160,21 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Black", 12F);
-            label3.Location = new Point(12, 403);
+            label3.Location = new Point(12, 395);
             label3.Name = "label3";
             label3.Size = new Size(75, 21);
             label3.TabIndex = 6;
             label3.Text = "Version:";
             // 
-            // textBox3
+            // VerText
             // 
-            textBox3.Cursor = Cursors.IBeam;
-            textBox3.Location = new Point(93, 403);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(106, 23);
-            textBox3.TabIndex = 7;
-            textBox3.TextAlign = HorizontalAlignment.Center;
+            VerText.Cursor = Cursors.IBeam;
+            VerText.Location = new Point(12, 419);
+            VerText.Name = "VerText";
+            VerText.Size = new Size(106, 23);
+            VerText.TabIndex = 7;
+            VerText.TextAlign = HorizontalAlignment.Center;
+            VerText.TextChanged += VerText_TextChanged;
             // 
             // ExceptionLabel
             // 
@@ -184,30 +189,63 @@
             ExceptionLabel.Text = "Exception Box";
             ExceptionLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // textBox4
+            // ExBox
             // 
-            textBox4.Location = new Point(3, 27);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(144, 23);
-            textBox4.TabIndex = 9;
+            ExBox.Location = new Point(3, 27);
+            ExBox.Name = "ExBox";
+            ExBox.Size = new Size(144, 23);
+            ExBox.TabIndex = 9;
+            ExBox.TextChanged += ExBox_TextChanged;
             // 
-            // panel2
+            // ExPanel
             // 
-            panel2.Controls.Add(textBox4);
-            panel2.Controls.Add(ExceptionLabel);
-            panel2.Location = new Point(282, 397);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(309, 60);
-            panel2.TabIndex = 10;
+            ExPanel.Controls.Add(ExBox);
+            ExPanel.Controls.Add(ExceptionLabel);
+            ExPanel.Location = new Point(282, 392);
+            ExPanel.Name = "ExPanel";
+            ExPanel.Size = new Size(309, 50);
+            ExPanel.TabIndex = 10;
             // 
             // NameField
             // 
             NameField.AutoSize = true;
-            NameField.Location = new Point(12, 492);
+            NameField.Font = new Font("Segoe UI", 15F);
+            NameField.Location = new Point(12, 450);
             NameField.Name = "NameField";
-            NameField.Size = new Size(39, 15);
+            NameField.Size = new Size(64, 28);
             NameField.TabIndex = 11;
             NameField.Text = "Name";
+            // 
+            // button2
+            // 
+            button2.Font = new Font("Nirmala UI", 12F, FontStyle.Bold);
+            button2.Location = new Point(12, 554);
+            button2.Name = "button2";
+            button2.Size = new Size(600, 35);
+            button2.TabIndex = 12;
+            button2.Text = "Copy To Clipboard";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 12F);
+            label2.Location = new Point(12, 70);
+            label2.Name = "label2";
+            label2.Size = new Size(60, 21);
+            label2.TabIndex = 13;
+            label2.Text = "Search:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F);
+            label4.Location = new Point(361, 70);
+            label4.Name = "label4";
+            label4.Size = new Size(68, 21);
+            label4.TabIndex = 14;
+            label4.Text = "Domain:";
             // 
             // Form
             // 
@@ -216,9 +254,12 @@
             AutoScroll = true;
             BackColor = SystemColors.Control;
             ClientSize = new Size(624, 601);
+            Controls.Add(label4);
+            Controls.Add(label2);
+            Controls.Add(button2);
             Controls.Add(NameField);
-            Controls.Add(panel2);
-            Controls.Add(textBox3);
+            Controls.Add(ExPanel);
+            Controls.Add(VerText);
             Controls.Add(label3);
             Controls.Add(textBox2);
             Controls.Add(comboBox1);
@@ -232,17 +273,56 @@
             Text = "Name Corrector";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
+            ExPanel.ResumeLayout(false);
+            ExPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button button1;
-        private Label label1;
-        private TextBox textBox1;
+        private string[] Domains = new[] {"All",
+                                          "AI",
+                                          "Gameplay",
+                                          "Animation",
+                                          "Misc",
+                                          "Plugin",
+                                          "Audio",
+                                          "Blueprint",
+                                          "Texture",
+                                          "Datasmith",
+                                          "Physics",
+                                          "UI",
+                                          "Enhanced Input",
+                                          "Material",
+                                          "Niagara",
+                                          "Paper2D",
+                                          "Procedural"};
+
+        private const string SupportedItem = "All Supported Items (*.3g2;*.3gp;*.3gpp;*.3g2;*.ac3;*.amr;*.abc;*.m4a;*.m4v;*.mov;*.asf;*.upack;*.as;*.adts;*.au;*.aif;*.aiff;*.avi;*.bwf;"
+            +"*.csv;*.cda;*.caf;*.exr;*.exr;*.fbx;*.fbx;*.fbx;*.fbx;*.fbx;*.fbx;*.upack;*.fga;*.flac;*.ies;*.json;*.aac;*.mp3;*.mp4;*.ogg;*.ogv;*.otf;*.otc;*.vdb;*.sdv;*.snd;*.st;*.st;"
+            +"*.st;*.json;*.paper2dsprites;*.srt;*.sami;*.smi;*.bmp;*.jpeg;*.jpg;*.pcx;*.png;*.psd;*.tga;*.dds;*.hdr;*.tif;*.tiff;*.json;*.ttc;*.ttf;*.wav;*.webm;*.webm;*.wma;*.wmv;*.gltf;"
+            +"*.glb;*.obj;*.mtlx;*.png;*.bmp;*.exr;*.hdr;*.tif;*.tiff;*.tga;*.dds;*.jpg;*.jpeg;*.pcx;*.psd;*.ies)|*.3g2;*.3gp;*.3gpp;*.3g2;*.ac3;*.amr;*.abc;*.m4a;*.m4v;*.mov;*.asf;*.upack;"
+            +"*.as;*.adts;*.au;*.aif;*.aiff;*.avi;*.bwf;*.csv;*.cda;*.caf;*.exr;*.exr;*.fbx;*.fbx;*.fbx;*.fbx;*.fbx;*.fbx;*.upack;*.fga;*.flac;*.ies;*.json;*.aac;*.mp3;*.mp4;*.ogg;*.ogv;"
+            +"*.otf;*.otc;*.vdb;*.sdv;*.snd;*.st;*.st;*.st;*.json;*.paper2dsprites;*.srt;*.sami;*.smi;*.bmp;*.jpeg;*.jpg;*.pcx;*.png;*.psd;*.tga;*.dds;*.hdr;*.tif;*.tiff;*.json;*.ttc;*.ttf;"
+            +"*.wav;*.webm;*.webm;*.wma;*.wmv;*.gltf;*.glb;*.obj;*.mtlx;*.png;*.bmp;*.exr;*.hdr;*.tif;*.tiff;*.tga;*.dds;*.jpg;*.jpeg;*.pcx;*.psd;*.ies|"
+            +"3G2 Multimedia Stream (*.3g2)|*.3g2|3GP Video Stream (*.3gp)|*.3gp|3GPP Multimedia File (*.3gpp)|*.3gpp|3GPP2 Multimedia File (*.3g2)|*.3g2|AC-3 Audio File (*.ac3)|*.ac3|"
+            +"Adaptive Multi-Rate Audio (*.amr)|*.amr|Alembic (*.abc)|*.abc|Apple MPEG-4 Audio (*.m4a)|*.m4a|Apple MPEG-4 Video (*.m4v)|*.m4v|Apple QuickTime Movie (*.mov)|*.mov|"
+            +"ASF Media File (*.asf)|*.asf|Asset Pack (*.upack)|*.upack|Audio amplitude curve (*.as)|*.as|Audio Data Transport Stream (*.adts)|*.adts|Audio File (*.au)|*.au|"
+            +"Audio Interchange File (*.aif)|*.aif|Audio Interchange File Format (*.aiff)|*.aiff|Audio Video Interleave File (*.avi)|*.avi|Broadcast Wave Audio (*.bwf)|*.bwf|"
+            +"Comma-separated values (*.csv)|*.csv|Compact Disc digital audio (*.cda)|*.cda|Core Audio (*.caf)|*.caf|EXR image HDR texture2d (*.exr)|*.exr|EXR ImgMedia Image Sequence (*.exr)|*.exr|"
+            +"FBX animation (*.fbx)|*.fbx|FBX meshes and animations (*.fbx)|*.fbx|Fbx Scene (*.fbx)|*.fbx|FBX skeletal meshes (*.fbx)|*.fbx|FBX static meshes (*.fbx)|*.fbx|Feature Pack (*.upack)|*.upack|"
+            +"FluidGridAscii (*.fga)|*.fga|Free Lossless Audio Codec (*.flac)|*.flac|IES Texture (Standard light profiles) (*.ies)|*.ies|JavaScript Object Notation (*.json)|*.json|"
+            +"MPEG-2 Advanced Audio Coding File (*.aac)|*.aac|MPEG-4 Audio (*.mp3)|*.mp3|MPEG-4 Movie (*.mp4)|*.mp4|OGG Vorbis bitstream format (*.ogg)|*.ogg|OGG Vorbis bitstream format (*.ogv)|*.ogv|"
+            +"OpenType Font (*.otf)|*.otf|OpenType Font (*.otc)|*.otc|OpenVDB Format (*.vdb)|*.vdb|Samsung Digital Video (*.sdv)|*.sdv|Sound File (*.snd)|*.snd|SpeedTree v8 (*.st)|*.st|"
+            +"SpeedTree v8 (*.st)|*.st|SpeedTree v8 (*.st)|*.st|Spritesheet JSON file (*.json)|*.json|Spritesheet JSON file (*.paper2dsprites)|*.paper2dsprites|SubRip Subtitles (*.srt)|*.srt|"
+            +"Synchronized Accessible Media Interchange (SAMI) File (*.sami)|*.sami|Synchronized Multimedia Integration (SMIL) File (*.smi)|*.smi|Texture (*.bmp)|*.bmp|Texture (*.jpeg)|*.jpeg|"
+            +"Texture (*.jpg)|*.jpg|Texture (*.pcx)|*.pcx|Texture (*.png)|*.png|Texture (*.psd)|*.psd|Texture (*.tga)|*.tga|Texture (Cubemap or 2D) (*.dds)|*.dds|"
+            +"Texture (HDR) (LongLat unwrap or 2D) (*.hdr)|*.hdr|Texture (TIFF) (*.tif)|*.tif|Texture (TIFF) (*.tiff)|*.tiff|Tiled JSON file (*.json)|*.json|TrueType Font (*.ttc)|*.ttc|"
+            +"TrueType Font (*.ttf)|*.ttf|Wave Audio File (*.wav)|*.wav|WEBM Movie (*.webm)|*.webm|WebM Multimedia File (*.webm)|*.webm|Windows Media Audio (*.wma)|*.wma|Windows Media Video (*.wmv)|*.wmv|"
+            +"GL Transmission Format (*.gltf)|*.gltf|GL Transmission Format (Binary) (*.glb)|*.glb|OBJ File Format (*.obj)|*.obj|MaterialX File Format (*.mtlx)|*.mtlx|Portable Network Graphic (*.png)|*.png|"
+            +"Bitmap image (*.bmp)|*.bmp|OpenEXR image (*.exr)|*.exr|High Dynamic Range image (*.hdr)|*.hdr|Tag Image File Format (*.tif)|*.tif|Tag Image File Format (*.tiff)|*.tiff|Targa image (*.tga)|*.tga|"
+            +"DirectDraw Surface (*.dds)|*.dds|JPEG image (*.jpg)|*.jpg|JPEG image (*.jpeg)|*.jpeg|Picture Exchange (*.pcx)|*.pcx|Photoshop Document (*.psd)|*.psd|IES light profile (*.ies)|*.ies";
 
         private readonly List<AssetName> AssetNames = new List<AssetName>
         {
@@ -309,7 +389,7 @@
             {new AssetName("Audio","Media Sound Wave","MSW_",string.Empty,"MSW_{0}")},
             {new AssetName("Audio","Reverb Effect","Reverb_",string.Empty,"Reverb_{0}")},
             {new AssetName("Audio","Sound Attenuation","ATT_",string.Empty,"ATT_{0}")},
-            {new AssetName("Audio","Sound Class","SCL_",string.Empty,"SCL_{0}", 100, "Move to SoundClasses folder")},
+            {new AssetName("Audio","Sound Class","SCL_",string.Empty,"SCL_{0}")},
             {new AssetName("Audio","Sound Concurrency","SCL_","_CO","SCL_{0}_CO")},
             {new AssetName("Audio","Sound Cue","A_","_Cue","A_{0}_Cue")},
             {new AssetName("Audio","Sound Mix","Mix_",string.Empty,"Mix_{0}")},
@@ -387,222 +467,21 @@
             {new AssetName("Procedural","Procedural Content Generation","PCG_",string.Empty,"PCG_{0}")}
         };
 
-        private readonly Dictionary<string, List<AssetName>> Domains
-            = new Dictionary<string, List<AssetName>>
-            {
-                {"AI", new List<AssetName>
-                    {
-                        {new AssetName("AI Controller","AIC_",string.Empty,"AIC_{0}")},
-                        {new AssetName("Behavior Tree","BT_",string.Empty,"BT_{0}")},
-                        {new AssetName("Blackboard","BB_",string.Empty,"BB_{0}")},
-                        {new AssetName("Decorator","BTD_",string.Empty,"BTD_{0}")},
-                        {new AssetName("Environment Query","EQS_",string.Empty,"EQS_{0}")},
-                        {new AssetName("Environment Query Context","EQS_","_Context","EQS_{0}_Context")},
-                        {new AssetName("Service","BTS_",string.Empty,"BTS_{0}")},
-                        {new AssetName("Task","BTT_",string.Empty,"BTT_{0}")}
-                    }
-                },
-                {"Gameplay", new List<AssetName>
-                    {
-                        {new AssetName("Ability Set","AS_",string.Empty,"AS_{0}")},
-                        {new AssetName("Game Phase Abilities","Phase_",string.Empty,"Phase_{0}")},
-                        {new AssetName("Gameplay Abilities","GA_",string.Empty,"GA_{0}")},
-                        {new AssetName("Gameplay Cue Notifies","GCN_",string.Empty,"GCN_{0}")},
-                        {new AssetName("Gameplay Effects","GE_",string.Empty,"GE_{0}")},
-                        {new AssetName("Latent Gameplay Cue Notifies","GCNL_",string.Empty,"GCNL_{0}")}
-                    }
-                },
-                {"Animation", new List<AssetName>
-                    {
-                        {new AssetName("Aim Offset","AO_",string.Empty,"AO_{0}")},
-                        {new AssetName("Aim Offset 1D","AO_",string.Empty,"AO_{0}")},
-                        {new AssetName("Animation Blueprint","ABP_",string.Empty,"ABP_{0}")},
-                        {new AssetName("Animation Composite","AC_",string.Empty,"AC_{0}")},
-                        {new AssetName("Animation Montage","AM_",string.Empty,"AM_{0}")},
-                        {new AssetName("Animation Notify","AN_",string.Empty,"AN_{0}")},
-                        {new AssetName("Animation Sequence","AS_",string.Empty,"AS_{0}")},
-                        {new AssetName("Blend Space","BS_",string.Empty,"BS_{0}")},
-                        {new AssetName("Blend Space 1D","BS_",string.Empty,"BS_{0}")},
-                        {new AssetName("Level Sequence","LS_",string.Empty,"LS_{0}")},
-                        {new AssetName("Morph Target","MT_",string.Empty,"MT_{0}")},
-                        {new AssetName("Paper Flipbook","PFB_",string.Empty,"PFB_{0}")},
-                        {new AssetName("Rig","Rig_",string.Empty,"Rig_{0}")},
-                        {new AssetName("Skeletal Mesh","SK_",string.Empty,"SK_{0}")},
-                        {new AssetName("Skeleton","SKEL_",string.Empty,"SKEL_{0}")}
-                    }
-                },
-                {"Misc", new List<AssetName>
-                    {
-                        {new AssetName("Animated Vector Field","VFA_",string.Empty,"VFA_{0}")},
-                        {new AssetName("Blink Media Player","BMP_",string.Empty,"BMP_{0}")},
-                        {new AssetName("Camera Anim","CA_",string.Empty,"CA_{0}")},
-                        {new AssetName("Color Curve","Curve_","_Color","Curve_{0}_Color")},
-                        {new AssetName("Curve Atlas","Curve_","_Atlas","Curve_{0}_Atlas")},
-                        {new AssetName("Curve Table","Curve_","_Table","Curve_{0}_Table")},
-                        {new AssetName("Misc","Data Asset","DA_",string.Empty,"DA_{1}_{0}",100,"sub-class type: Weapon")},
-                        {new AssetName("Data Registry","DR_",string.Empty,"DR_{0}")},
-                        {new AssetName("Data Table","DT_",string.Empty,"DT_{0}")},
-                        {new AssetName("File Media Source","FMS_",string.Empty,"FMS_{0}")},
-                        {new AssetName("Float Curve","Curve_","_Float","Curve_{0}_Float")},
-                        {new AssetName("Foliage Type","FT_",string.Empty,"FT_{0}")},
-                        {new AssetName("Force Feedback Effect","FFE_",string.Empty,"FFE_{0}")},
-                        {new AssetName("Landscape Grass Type","LG_",string.Empty,"LG_{0}")},
-                        {new AssetName("Landscape Layer","LL_",string.Empty,"LL_{0}")},
-                        {new AssetName("Level","L_",string.Empty,"L_{0}")},
-                        {new AssetName("Level (World Partition)","L_","_WP","L_{0}_WP")},
-                        {new AssetName("Level Instance","LI_",string.Empty,"LI_{0}")},
-                        {new AssetName("Media Player","MP_",string.Empty,"MP_{0}")},
-                        {new AssetName("Object Library","OL_",string.Empty,"OL_{0}")},
-                        {new AssetName("Redirector","RE_",string.Empty,"RE_{0}")},
-                        {new AssetName("Static Mesh","SM_",string.Empty,"SM_{0}")},
-                        {new AssetName("Static Vector Field","VF_",string.Empty,"VF_{0}")},
-                        {new AssetName("Touch Interface Setup","TI_",string.Empty,"TI_{0}")},
-                        {new AssetName("Vector Curve","Curve_","_Vector","Curve_{0}_Vector")}
-                    }
-                },
-                {"Plugin", new List<AssetName>
-                    {
-                        {new AssetName("Asset Placement Palette","APP_",string.Empty,"APP_{0}")},
-                        {new AssetName("Substance Graph Instance","SGI_",string.Empty,"SGI_{0}")},
-                        {new AssetName("Substance Instance Factor","SIF_",string.Empty,"SIF_{0}")}
-                    }
-                },
-                {"Audio", new List<AssetName>
-                    {
-                        {new AssetName("Attenuation",string.Empty,"_ATT","{0}_ATT")},
-                        {new AssetName("Dialogue Voice","DV_",string.Empty,"DV_{0}")},
-                        {new AssetName("Dialogue Wave","DW_",string.Empty,"DW_{0}")},
-                        {new AssetName("Media Sound Wave","MSW_",string.Empty,"MSW_{0}")},
-                        {new AssetName("Reverb Effect","Reverb_",string.Empty,"Reverb_{0}")},
-                        {new AssetName("Sound Attenuation","ATT_",string.Empty,"ATT_{0}")},
-                        {new AssetName("Sound Class","SCL_",string.Empty,"SoundClasses/SCL_{0}")},
-                        {new AssetName("Sound Concurrency","SCL_","_CO","SCL_{0}_CO")},
-                        {new AssetName("Sound Cue","A_","_Cue","A_{0}_Cue")},
-                        {new AssetName("Sound Mix","Mix_",string.Empty,"Mix_{0}")},
-                        {new AssetName("Sound Wave","A_",string.Empty,"A_{0}")},
-                        {new AssetName("Soundscape Color","SC_",string.Empty,"SC_{0}")},
-                        {new AssetName("Soundscape Palette","SP_",string.Empty,"SP_{0}")}
-                    }
-                },
-                {"Blueprint", new List<AssetName>
-                    {
-                        {new AssetName("Blueprint","BP_",string.Empty,"BP_{0}")},
-                        {new AssetName("Blueprint Actor Component","BP_","_AC","BP_{0}_AC")},
-                        {new AssetName("Blueprint Scene Component","BP_","_SC","BP_{0}_SC")},
-                        {new AssetName("Blueprint Function Library","BPFL_",string.Empty,"BPFL_{0}")},
-                        {new AssetName("Blueprint Interface","BPI_",string.Empty,"BPI_{0}")},
-                        {new AssetName("Blueprint Macro Library","BPML_",string.Empty,"BPML_{0}")},
-                        {new AssetName("Enumerator","E",string.Empty,"E{0}")},
-                        {new AssetName("Structure","S",string.Empty,"S{0}")},
-                        {new AssetName("Tutorial Blueprint","TBP_",string.Empty,"TBP_{0}")}
-                    }
-                },
-                {"Texture", new List<AssetName>
-                    {
-                        {new AssetName("Cube Render Target","RTC_",string.Empty,"RTC_{0}")},
-                        {new AssetName("Media Texture","MT_",string.Empty,"MT_{0}")},
-                        {new AssetName("Render Target","RT_",string.Empty,"RT_{0}")},
-                        {new AssetName("Texture","T_",string.Empty,"T_{0}")},
-                        {new AssetName("Texture (Alpha/Opacity)","T_","_A","T_{0}_A")},
-                        {new AssetName("Texture (Ambient Occlusion)","T_","_AO","T_{0}_AO")},
-                        {new AssetName("Texture (Base Color)","T_","_BC","T_{0}_BC")},
-                        {new AssetName("Texture (Displacement)","T_","_D","T_{0}_D")},
-                        {new AssetName("Texture (Emissive)","T_","_E","T_{0}_E")},
-                        {new AssetName("Texture (Flow Map)","T_","_F","T_{0}_F")},
-                        {new AssetName("Texture (Height)","T_","_H","T_{0}_H")},
-                        {new AssetName("Texture (Light Map)","T_","_L","T_{0}_L")},
-                        {new AssetName("Texture (Mask)","T_","_Mask","T_{0}_Mask")},
-                        {new AssetName("Texture (Metallic)","T_","_M","T_{0}_M")},
-                        {new AssetName("Texture (Normal)","T_","_N","T_{0}_N")},
-                        {new AssetName("Texture", "Texture (Packed)","T_","_{1}","T_{0}_{1}", 100, "Color Order: ARMH")},
-                        {new AssetName("Texture (Roughness)","T_","_R","T_{0}_R")},
-                        {new AssetName("Texture (Specular)","T_","_S","T_{0}_S")},
-                        {new AssetName("Texture Cube","TC_",string.Empty,"TC_{0}")},
-                        {new AssetName("Texture Light Profile","TLP_",string.Empty,"TLP_{0}")}
-                    }
-                },
-                {"Datasmith", new List<AssetName>
-                    {
-                        {new AssetName("Dataprep Asset","DPA_",string.Empty,"DPA_{0}")}
-                    }
-                },
-                {"Physics", new List<AssetName>
-                    {
-                        {new AssetName("Destructable Mesh","DM_",string.Empty,"DM_{0}")},
-                        {new AssetName("Physical Material","PM_",string.Empty,"PM_{0}")},
-                        {new AssetName("Physics Asset","PHYS_",string.Empty,"PHYS_{0}")}
-                    }
-                },
-                {"UI", new List<AssetName>
-                    {
-                        {new AssetName("Editor Utility Widget Blueprint","EUW_",string.Empty,"EUW_{0}")},
-                        {new AssetName("Font","Font_",string.Empty,"Font_{0}")},
-                        {new AssetName("Slate Brush","SB_",string.Empty,"SB_{0}")},
-                        {new AssetName("Slate Widget Style","SWS_",string.Empty,"SWS_{0}")},
-                        {new AssetName("Widget Blueprint","W_",string.Empty,"W_{0}")}
-                    }
-                },
-                {"Enhanced Input", new List<AssetName>
-                    {
-                        {new AssetName("Input Action","IA_",string.Empty,"IA_{0}")},
-                        {new AssetName("Input Mapping Context","IMC_",string.Empty,"IMC_{0}")}
-                    }
-                },
-                {"Material", new List<AssetName>
-                    {
-                        {new AssetName("Material","M_",string.Empty,"M_{0}")},
-                        {new AssetName("Material (Decal)","M_","_Decal","M_{0}_Decal")},
-                        {new AssetName("Material (Light Function)","M_","_LF","M_{0}_LF")},
-                        {new AssetName("Material (Post Process)","M_","_PP","M_{0}_PP")},
-                        {new AssetName("Material (User Interface)","M_","_UI","M_{0}_UI")},
-                        {new AssetName("Material (Volume)","M_","_Vol","M_{0}_Vol")},
-                        {new AssetName("Material Function","MF_",string.Empty,"MF_{0}")},
-                        {new AssetName("Material Instance","MI_",string.Empty,"MI_{0}")},
-                        {new AssetName("Material Instance (Decal)","MI_","_Decal","MI_{0}_Decal")},
-                        {new AssetName("Material Instance (Light Function)","MI_","_LF","MI_{0}_LF")},
-                        {new AssetName("Material Instance (Post Process)","MI_","_PP","MI_{0}_PP")},
-                        {new AssetName("Material Instance (User Interface)","MI_","_UI","MI_{0}_UI")},
-                        {new AssetName("Material Instance (Volume)","MI_","_Vol","MI_{0}_Vol")},
-                        {new AssetName("Material Parameter Collection","MPC_",string.Empty,"MPC_{0}")},
-                        {new AssetName("Subsurface Profile","SP_",string.Empty,"SP_{0}")}
-                    }
-                },
-                {"Niagara", new List<AssetName>
-                    {
-                        {new AssetName("Niagara Dynamic Input Script","NDIS_",string.Empty,"NDIS_{0}")},
-                        {new AssetName("Niagara Effect Type","NET_",string.Empty,"NET_{0}")},
-                        {new AssetName("Niagara Emitter","NE_",string.Empty,"NE_{0}")},
-                        {new AssetName("Niagara Function Script","NFS_",string.Empty,"NFS_{0}")},
-                        {new AssetName("Niagara Module Script","NMS_",string.Empty,"NMS_{0}")},
-                        {new AssetName("Niagara Parameter Collection","NPC_",string.Empty,"NPC_{0}")},
-                        {new AssetName("Niagara Parameter Collection Instance","NPCI_",string.Empty,"NPCI_{0}")},
-                        {new AssetName("Niagara System","NS_",string.Empty,"NS_{0}")}
-                    }
-                },
-                {"Paper2D", new List<AssetName>
-                    {
-                        {new AssetName("Paper Flipbook","PFB_",string.Empty,"PFB_{0}")},
-                        {new AssetName("Sprite","SPR_",string.Empty,"SPR_{0}")},
-                        {new AssetName("Sprite Atlas Group","SPRG_",string.Empty,"SPRG_{0}")},
-                        {new AssetName("Tile Map","TM_",string.Empty,"TM_{0}")},
-                        {new AssetName("Tile Set","TS_",string.Empty,"TS_{0}")}
-                    }
-                },
-                {"Procedural", new List<AssetName>
-                    {
-                        {new AssetName("Procedural Content Generation","PCG_",string.Empty,"PCG_{0}")}
-                    }
-                }
-            };
+        private Button button1;
+        private Label label1;
+        private TextBox textBox1;
         private Panel panel1;
         private ComboBox comboBox1;
         private ListBox listBox1;
         private TextBox textBox2;
         private Label label3;
-        private TextBox textBox3;
+        private TextBox VerText;
         private Label ExceptionLabel;
-        private TextBox textBox4;
-        private Panel panel2;
-        private Label NameField;
+        private TextBox ExBox;
+        private Panel ExPanel;
+        public Label NameField;
+        private Button button2;
+        private Label label2;
+        private Label label4;
     }
 }

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinFormsApp1
 {
@@ -24,7 +25,7 @@ namespace WinFormsApp1
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                if(LastAddress == string.Empty)
+                if (LastAddress == string.Empty)
                 {
                     openFileDialog.InitialDirectory = "c:\\";
                 }
@@ -32,9 +33,9 @@ namespace WinFormsApp1
                 {
                     openFileDialog.InitialDirectory = LastAddress;
                 }
-                
-                openFileDialog.Filter = "All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
+
+                openFileDialog.Filter = SupportedItem;
+                openFileDialog.FilterIndex = 0;
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -81,14 +82,22 @@ namespace WinFormsApp1
 
         public void SetNameField()
         {
-            string[] fileNamePiece = textBox1.Text.Split('.');
-
             FileName = string.Empty;
-            FileExtention = fileNamePiece.Last();
 
-            for (int i = 0; i < fileNamePiece.Length - 1; i++)
+            if (textBox1.Text.Contains('.'))
             {
-                FileName += fileNamePiece[i];
+                string[] fileNamePiece = textBox1.Text.Split('.');
+
+                FileExtention = fileNamePiece.Last();
+
+                for (int i = 0; i < fileNamePiece.Length - 1; i++)
+                {
+                    FileName += fileNamePiece[i];
+                }
+            }
+            else
+            {
+                FileName = textBox1.Text;
             }
 
             string tempName = string.Empty;
@@ -97,7 +106,7 @@ namespace WinFormsApp1
             {
                 if (charName == ' ')
                 {
-                    tempName += '_';
+                    tempName += '-';
                 }
                 else if (charName == '+'
                      || charName == '}'
@@ -117,9 +126,33 @@ namespace WinFormsApp1
 
             FileName = tempName;
 
+            if (listBox1.SelectedItem != null)
+            {
+                string SelectedItem = listBox1.SelectedItem.ToString();
 
+                AssetName asset = AssetNames.Find(x => x.AssetType == SelectedItem);
 
-            NameField.Text = $"{FileName}";
+                if (string.IsNullOrEmpty(asset.ExceptionText))
+                {
+                    ExPanel.Visible = false;
+                    NameField.Text = string.Format(asset.Example, FileName);
+                }
+                else
+                {
+                    ExPanel.Visible = true;
+                    ExceptionLabel.Text = asset.ExceptionText;
+                    NameField.Text = string.Format(asset.Example, FileName, ExBox.Text);
+                }
+
+                if (!string.IsNullOrEmpty(VerText.Text))
+                {
+                    NameField.Text += $"_{VerText.Text}";
+                }
+            }
+            else
+            {
+                NameField.Text = FileName;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -135,23 +168,17 @@ namespace WinFormsApp1
         private void Form1_Load(object sender, EventArgs e)
         {
             ListMaxHeight = listBox1.Size.Height;
-            var keys = Domains.Keys;
 
-            comboBox1.Items.Add("All");
-
-            foreach (var key in keys)
+            foreach (var domain in Domains)
             {
-                comboBox1.Items.Add(key);
+                comboBox1.Items.Add(domain);
             }
 
             comboBox1.SelectedItem = "All";
 
             SetDomain(comboBox1.SelectedItem.ToString());
-        }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            SetNameField();
+            ExPanel.Visible = false;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -164,16 +191,14 @@ namespace WinFormsApp1
             string selected = comboBox1.SelectedItem.ToString();
             listBox1.Sorted = false;
 
-            if (textBox2.Text == string.Empty)
+            if (string.IsNullOrEmpty(textBox2.Text))
             {
                 SetDomain(selected);
                 return;
             }
 
-
             List<string> opetions;
             listBox1.Items.Clear();
-
 
             if (selected == "All")
             {
@@ -196,7 +221,31 @@ namespace WinFormsApp1
             int tempHeight = (lenght * 22) / 2;
 
             listBox1.Size = new Size(listBox1.Size.Width, ((int)MathF.Max(ListMaxHeight, tempHeight)));
+        }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            SetNameField();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetNameField();
+        }
+
+        private void ExBox_TextChanged(object sender, EventArgs e)
+        {
+            SetNameField();
+        }
+
+        private void VerText_TextChanged(object sender, EventArgs e)
+        {
+            SetNameField();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(NameField.Text);
         }
     }
 }
