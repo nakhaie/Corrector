@@ -8,7 +8,6 @@
         public string Suffix { get; set; }
         public string Example { get; set; }
         public string ExceptionText { get; set; }
-        public string Priority { get; set; }
 
         public AssetName(string assetType, string prefix, string suffix, string example)
         {                                   
@@ -18,7 +17,7 @@
             Example = example;
         }
 
-        public AssetName(string domain, string assetType, string prefix, string suffix, string example, int priority = 101, string exception = "")
+        public AssetName(string domain, string assetType, string prefix, string suffix, string example, string exception = "")
         {
             Domain = domain;
             AssetType = assetType;
@@ -57,6 +56,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
             button1 = new Button();
             label1 = new Label();
             textBox1 = new TextBox();
@@ -73,6 +73,13 @@
             button2 = new Button();
             label2 = new Label();
             label4 = new Label();
+            checkBox1 = new CheckBox();
+            ClassBox = new TextBox();
+            label5 = new Label();
+            label6 = new Label();
+            VariationBox = new ComboBox();
+            VariantBox = new ComboBox();
+            label7 = new Label();
             panel1.SuspendLayout();
             ExPanel.SuspendLayout();
             SuspendLayout();
@@ -137,11 +144,12 @@
             // 
             // comboBox1
             // 
+            comboBox1.Font = new Font("Segoe UI", 9F);
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(429, 70);
+            comboBox1.Location = new Point(331, 70);
             comboBox1.MaxDropDownItems = 12;
             comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(183, 23);
+            comboBox1.Size = new Size(111, 23);
             comboBox1.Sorted = true;
             comboBox1.TabIndex = 1;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
@@ -149,10 +157,10 @@
             // textBox2
             // 
             textBox2.Cursor = Cursors.IBeam;
-            textBox2.Location = new Point(75, 70);
+            textBox2.Location = new Point(74, 70);
             textBox2.MaxLength = 32;
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(243, 23);
+            textBox2.Size = new Size(180, 23);
             textBox2.TabIndex = 4;
             textBox2.TextChanged += textBox2_TextChanged;
             // 
@@ -160,7 +168,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Black", 12F);
-            label3.Location = new Point(12, 395);
+            label3.Location = new Point(465, 394);
             label3.Name = "label3";
             label3.Size = new Size(75, 21);
             label3.TabIndex = 6;
@@ -169,7 +177,7 @@
             // VerText
             // 
             VerText.Cursor = Cursors.IBeam;
-            VerText.Location = new Point(12, 419);
+            VerText.Location = new Point(465, 418);
             VerText.Name = "VerText";
             VerText.Size = new Size(106, 23);
             VerText.TabIndex = 7;
@@ -184,9 +192,9 @@
             ExceptionLabel.Margin = new Padding(0);
             ExceptionLabel.Name = "ExceptionLabel";
             ExceptionLabel.RightToLeft = RightToLeft.No;
-            ExceptionLabel.Size = new Size(123, 21);
+            ExceptionLabel.Size = new Size(162, 21);
             ExceptionLabel.TabIndex = 8;
-            ExceptionLabel.Text = "Exception Box";
+            ExceptionLabel.Text = "Color Order: ARMH";
             ExceptionLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ExBox
@@ -201,16 +209,16 @@
             // 
             ExPanel.Controls.Add(ExBox);
             ExPanel.Controls.Add(ExceptionLabel);
-            ExPanel.Location = new Point(282, 392);
+            ExPanel.Location = new Point(12, 452);
             ExPanel.Name = "ExPanel";
-            ExPanel.Size = new Size(309, 50);
+            ExPanel.Size = new Size(194, 50);
             ExPanel.TabIndex = 10;
             // 
             // NameField
             // 
             NameField.AutoSize = true;
             NameField.Font = new Font("Segoe UI", 15F);
-            NameField.Location = new Point(12, 450);
+            NameField.Location = new Point(12, 505);
             NameField.Name = "NameField";
             NameField.Size = new Size(64, 28);
             NameField.TabIndex = 11;
@@ -241,11 +249,82 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F);
-            label4.Location = new Point(361, 70);
+            label4.Location = new Point(260, 70);
             label4.Name = "label4";
             label4.Size = new Size(68, 21);
             label4.TabIndex = 14;
             label4.Text = "Domain:";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Font = new Font("Segoe UI", 12F);
+            checkBox1.Location = new Point(482, 68);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(129, 25);
+            checkBox1.TabIndex = 15;
+            checkBox1.Text = "Auto Selection";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // ClassBox
+            // 
+            ClassBox.Cursor = Cursors.IBeam;
+            ClassBox.Location = new Point(12, 418);
+            ClassBox.Name = "ClassBox";
+            ClassBox.Size = new Size(106, 23);
+            ClassBox.TabIndex = 17;
+            ClassBox.TextAlign = HorizontalAlignment.Center;
+            ClassBox.TextChanged += ClassBox_TextChanged;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI Black", 12F);
+            label5.Location = new Point(12, 394);
+            label5.Name = "label5";
+            label5.Size = new Size(97, 21);
+            label5.TabIndex = 16;
+            label5.Text = "Class Type:";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI Black", 12F);
+            label6.Location = new Point(155, 394);
+            label6.Name = "label6";
+            label6.Size = new Size(88, 21);
+            label6.TabIndex = 18;
+            label6.Text = "Variation:";
+            // 
+            // VariationBox
+            // 
+            VariationBox.Font = new Font("Segoe UI", 9F);
+            VariationBox.FormattingEnabled = true;
+            VariationBox.Location = new Point(155, 418);
+            VariationBox.MaxDropDownItems = 12;
+            VariationBox.Name = "VariationBox";
+            VariationBox.Size = new Size(120, 23);
+            VariationBox.TabIndex = 19;
+            // 
+            // VariantBox
+            // 
+            VariantBox.Font = new Font("Segoe UI", 9F);
+            VariantBox.FormattingEnabled = true;
+            VariantBox.Location = new Point(319, 418);
+            VariantBox.MaxDropDownItems = 12;
+            VariantBox.Name = "VariantBox";
+            VariantBox.Size = new Size(111, 23);
+            VariantBox.TabIndex = 21;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI Black", 12F);
+            label7.Location = new Point(319, 394);
+            label7.Name = "label7";
+            label7.Size = new Size(73, 21);
+            label7.TabIndex = 20;
+            label7.Text = "Variant:";
             // 
             // Form
             // 
@@ -254,6 +333,13 @@
             AutoScroll = true;
             BackColor = SystemColors.Control;
             ClientSize = new Size(624, 601);
+            Controls.Add(VariantBox);
+            Controls.Add(label7);
+            Controls.Add(VariationBox);
+            Controls.Add(label6);
+            Controls.Add(ClassBox);
+            Controls.Add(label5);
+            Controls.Add(checkBox1);
             Controls.Add(label4);
             Controls.Add(label2);
             Controls.Add(button2);
@@ -268,6 +354,7 @@
             Controls.Add(label1);
             Controls.Add(button1);
             ForeColor = SystemColors.ControlText;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "Form";
             Text = "Name Corrector";
@@ -354,14 +441,14 @@
             {new AssetName("Animation","Paper Flipbook","PFB_",string.Empty,"PFB_{0}")},
             {new AssetName("Animation","Rig","Rig_",string.Empty,"Rig_{0}")},
             {new AssetName("Animation","Skeletal Mesh","SK_",string.Empty,"SK_{0}")},
-            {new AssetName("Animation","Skeleton","SKEL_",string.Empty,"SKEL_{0}")},
+            {new AssetName("Animation","Skeleton","S_",string.Empty,"SKEL_{0}")},
             {new AssetName("Misc","Animated Vector Field","VFA_",string.Empty,"VFA_{0}")},
             {new AssetName("Misc","Blink Media Player","BMP_",string.Empty,"BMP_{0}")},
             {new AssetName("Misc","Camera Anim","CA_",string.Empty,"CA_{0}")},
             {new AssetName("Misc","Color Curve","Curve_","_Color","Curve_{0}_Color")},
             {new AssetName("Misc","Curve Atlas","Curve_","_Atlas","Curve_{0}_Atlas")},
             {new AssetName("Misc","Curve Table","Curve_","_Table","Curve_{0}_Table")},
-            {new AssetName("Misc","Data Asset","DA_",string.Empty,"DA_{1}_{0}",100,"sub-class type: Weapon")},
+            {new AssetName("Misc","Data Asset","DA_",string.Empty,"DA_{0}")},
             {new AssetName("Misc","Data Registry","DR_",string.Empty,"DR_{0}")},
             {new AssetName("Misc","Data Table","DT_",string.Empty,"DT_{0}")},
             {new AssetName("Misc","File Media Source","FMS_",string.Empty,"FMS_{0}")},
@@ -378,6 +465,7 @@
             {new AssetName("Misc","Redirector","RE_",string.Empty,"RE_{0}")},
             {new AssetName("Misc","Static Mesh","SM_",string.Empty,"SM_{0}")},
             {new AssetName("Misc","Static Vector Field","VF_",string.Empty,"VF_{0}")},
+            {new AssetName("Misc","Geometry Cache","GC_",string.Empty,"GC_{0}")},
             {new AssetName("Misc","Touch Interface Setup","TI_",string.Empty,"TI_{0}")},
             {new AssetName("Misc","Vector Curve","Curve_","_Vector","Curve_{0}_Vector")},
             {new AssetName("Plugin","Asset Placement Palette","APP_",string.Empty,"APP_{0}")},
@@ -420,7 +508,7 @@
             {new AssetName("Texture","Texture (Mask)","T_","_Mask","T_{0}_Mask")},
             {new AssetName("Texture","Texture (Metallic)","T_","_M","T_{0}_M")},
             {new AssetName("Texture","Texture (Normal)","T_","_N","T_{0}_N")},
-            {new AssetName("Texture","Texture (Packed)","T_","_{1}","T_{0}_{1}",100,"Color Order: ARMH")},
+            {new AssetName("Texture","Texture (Packed)","T_","_{1}","T_{0}_{1}","Color Order: ARMH")},
             {new AssetName("Texture","Texture (Roughness)","T_","_R","T_{0}_R")},
             {new AssetName("Texture","Texture (Specular)","T_","_S","T_{0}_S")},
             {new AssetName("Texture","Texture Cube","TC_",string.Empty,"TC_{0}")},
@@ -467,6 +555,31 @@
             {new AssetName("Procedural","Procedural Content Generation","PCG_",string.Empty,"PCG_{0}")}
         };
 
+        private readonly Dictionary<string, string> ForamtsTypes = new Dictionary<string, string>
+        {
+            {"otf", "Font"},
+            {"ttf", "Font"},
+            {"woff", "Font"},
+            {"mp3","File Media Source"},
+            {"wav","Media Sound Wave"},
+            {"abc","Static Mesh,Geometry Cache,Skeletal Mesh,Skeleton,Animation Sequence"},
+            {"fbx","Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"},
+            {"obj","Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"
+                    +"Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+                    +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
+            {"hdr","Texture Cube"},
+            {"jpg","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+                    +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
+            {"png","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+                    +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
+            {"psd","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+                    +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
+            {"tga","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+                    +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
+            {"mtl","Material,Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+                    +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"}
+        };
+
         private Button button1;
         private Label label1;
         private TextBox textBox1;
@@ -483,5 +596,12 @@
         private Button button2;
         private Label label2;
         private Label label4;
+        private CheckBox checkBox1;
+        private TextBox ClassBox;
+        private Label label5;
+        private Label label6;
+        private ComboBox VariationBox;
+        private ComboBox VariantBox;
+        private Label label7;
     }
 }

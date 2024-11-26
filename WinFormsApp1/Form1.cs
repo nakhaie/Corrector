@@ -1,7 +1,4 @@
-using System.Linq;
-using System.Windows.Forms;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Globalization;
 
 namespace WinFormsApp1
 {
@@ -80,6 +77,7 @@ namespace WinFormsApp1
             listBox1.Size = new Size(listBox1.Size.Width, ((int)MathF.Max(ListMaxHeight, tempHeight)));
         }
 
+        //Prefix_ModelType_Name_suffix_Variation(A,B,C)_SpcVersion(IIV)_Version(#)
         public void SetNameField()
         {
             FileName = string.Empty;
@@ -118,6 +116,10 @@ namespace WinFormsApp1
                 {
                     continue;
                 }
+                else if (string.IsNullOrEmpty(tempName))
+                {
+                    tempName += charName.ToString().ToUpper();
+                }
                 else
                 {
                     tempName += charName;
@@ -125,6 +127,11 @@ namespace WinFormsApp1
             }
 
             FileName = tempName;
+
+            if (!string.IsNullOrEmpty(ClassBox.Text))
+            {
+                FileName = $"{ClassBox.Text.ToUpper()[0]}{ClassBox.Text.Substring(1)}_{FileName}";
+            }
 
             if (listBox1.SelectedItem != null)
             {
@@ -143,16 +150,43 @@ namespace WinFormsApp1
                     ExceptionLabel.Text = asset.ExceptionText;
                     NameField.Text = string.Format(asset.Example, FileName, ExBox.Text);
                 }
-
-                if (!string.IsNullOrEmpty(VerText.Text))
-                {
-                    NameField.Text += $"_{VerText.Text}";
-                }
             }
             else
             {
                 NameField.Text = FileName;
             }
+
+            string variationTemp = VariationBox.SelectedItem.ToString();
+
+            if (!string.IsNullOrEmpty(variationTemp))
+            {
+                variationTemp = variationTemp.Substring(variationTemp.Length - 1);
+
+                if (!string.IsNullOrWhiteSpace(variationTemp))
+                {
+                    NameField.Text += $"_{variationTemp}";
+                }
+            }
+
+
+            variationTemp = VariantBox.SelectedItem.ToString();
+
+            if (!string.IsNullOrEmpty(variationTemp))
+            {
+                variationTemp = variationTemp.Substring(3);
+
+                if (!string.IsNullOrWhiteSpace(variationTemp))
+                {
+                    NameField.Text += $"_{variationTemp}";
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(VerText.Text))
+            {
+                NameField.Text += $"_{VerText.Text}";
+            }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -175,6 +209,15 @@ namespace WinFormsApp1
             }
 
             comboBox1.SelectedItem = "All";
+
+            VariationBox.Items.AddRange("0)  ,1) A,2) B,3) C,4) D,5) E,6) F,7) G,8) H".Split(','));
+            VariantBox.Items.AddRange("0)  ,1) I,2) II,3) III,4) IV,5) V,6) VI,7) VII,8) VIII,9) IX,10) X".Split(','));
+
+            VariationBox.SelectedIndex = 0;
+            VariantBox.SelectedIndex = 0;
+
+            VariantBox.SelectedIndexChanged += VariantBox_SelectedIndexChanged;
+            VariationBox.SelectedIndexChanged += VariationBox_SelectedIndexChanged;
 
             SetDomain(comboBox1.SelectedItem.ToString());
 
@@ -243,9 +286,24 @@ namespace WinFormsApp1
             SetNameField();
         }
 
+        private void ClassBox_TextChanged(object sender, EventArgs e)
+        {
+            SetNameField();
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(NameField.Text);
+        }
+
+        private void VariationBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetNameField();
+        }
+
+        private void VariantBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetNameField();
         }
     }
 }
