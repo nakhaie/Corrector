@@ -150,7 +150,6 @@
             comboBox1.MaxDropDownItems = 12;
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(111, 23);
-            comboBox1.Sorted = true;
             comboBox1.TabIndex = 1;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
@@ -370,21 +369,21 @@
 
         private string[] Domains = new[] {"All",
                                           "AI",
-                                          "Gameplay",
                                           "Animation",
-                                          "Misc",
-                                          "Plugin",
                                           "Audio",
                                           "Blueprint",
-                                          "Texture",
                                           "Datasmith",
-                                          "Physics",
-                                          "UI",
                                           "Enhanced Input",
+                                          "Gameplay",
                                           "Material",
+                                          "Misc",
                                           "Niagara",
                                           "Paper2D",
-                                          "Procedural"};
+                                          "Physics",
+                                          "Plugin",
+                                          "Procedural",
+                                          "Texture",
+                                          "UI"};
 
         private const string SupportedItem = "All Supported Items (*.3g2;*.3gp;*.3gpp;*.3g2;*.ac3;*.amr;*.abc;*.m4a;*.m4v;*.mov;*.asf;*.upack;*.as;*.adts;*.au;*.aif;*.aiff;*.avi;*.bwf;"
             +"*.csv;*.cda;*.caf;*.exr;*.exr;*.fbx;*.fbx;*.fbx;*.fbx;*.fbx;*.fbx;*.upack;*.fga;*.flac;*.ies;*.json;*.aac;*.mp3;*.mp4;*.ogg;*.ogv;*.otf;*.otc;*.vdb;*.sdv;*.snd;*.st;*.st;"

@@ -82,19 +82,10 @@ namespace WinFormsApp1
         private void SetSreach()
         {
             string selected = comboBox1.SelectedItem.ToString();
+            List<string> opetions = AssetNames.Select(x => x.AssetType).ToList();
 
-            List<string> opetions;
             listBox1.Sorted = false;
             listBox1.Items.Clear();
-
-            if (selected == "All")
-            {
-                opetions = AssetNames.Select(x => x.AssetType).ToList();
-            }
-            else
-            {
-                opetions = AssetNames.Where(x => x.Domain == selected).Select(x => x.AssetType).ToList();
-            }
 
             opetions.Sort();
 
