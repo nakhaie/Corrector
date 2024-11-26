@@ -46,9 +46,11 @@ namespace WinFormsApp1
             return filePath;
         }
 
-        private void SetDomain(string selected)
+        private void SetDomain()
         {
-            textBox2.Text = string.Empty;
+            string selected = comboBox1.SelectedItem.ToString();
+
+            SearchBox.Text = string.Empty;
             listBox1.Items.Clear();
             listBox1.Sorted = true;
             int tempHeight = 0;
@@ -77,9 +79,40 @@ namespace WinFormsApp1
             listBox1.Size = new Size(listBox1.Size.Width, ((int)MathF.Max(ListMaxHeight, tempHeight)));
         }
 
-        //Prefix_ModelType_Name_suffix_Variation(A,B,C)_SpcVersion(IIV)_Version(#)
+        private void SetSreach()
+        {
+            string selected = comboBox1.SelectedItem.ToString();
+
+            List<string> opetions;
+            listBox1.Sorted = false;
+            listBox1.Items.Clear();
+
+            if (selected == "All")
+            {
+                opetions = AssetNames.Select(x => x.AssetType).ToList();
+            }
+            else
+            {
+                opetions = AssetNames.Where(x => x.Domain == selected).Select(x => x.AssetType).ToList();
+            }
+
+            opetions.Sort();
+
+            int lenght = 2;
+            foreach (var asset in opetions.Where(x => x.StartsWith(SearchBox.Text, StringComparison.CurrentCultureIgnoreCase)))
+            {
+                listBox1.Items.Add(asset);
+                lenght++;
+            }
+
+            int tempHeight = (lenght * 22) / 2;
+
+            listBox1.Size = new Size(listBox1.Size.Width, ((int)MathF.Max(ListMaxHeight, tempHeight)));
+        }
+        
         public void SetNameField()
         {
+            //Prefix_ModelType_Name_suffix_Variation(A,B,C)_SpcVersion(IIV)_Version(#)
             FileName = string.Empty;
 
             if (textBox1.Text.Contains('.'))
@@ -168,7 +201,6 @@ namespace WinFormsApp1
                 }
             }
 
-
             variationTemp = VariantBox.SelectedItem.ToString();
 
             if (!string.IsNullOrEmpty(variationTemp))
@@ -181,24 +213,13 @@ namespace WinFormsApp1
                 }
             }
 
-
             if (!string.IsNullOrEmpty(VerText.Text))
             {
                 NameField.Text += $"_{VerText.Text}";
             }
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string getAddress = OpenFileDialog();
-
-            if (!string.IsNullOrEmpty(getAddress))
-            {
-                textBox1.Text = getAddress;
-            }
-        }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
             ListMaxHeight = listBox1.Size.Height;
@@ -219,51 +240,36 @@ namespace WinFormsApp1
             VariantBox.SelectedIndexChanged += VariantBox_SelectedIndexChanged;
             VariationBox.SelectedIndexChanged += VariationBox_SelectedIndexChanged;
 
-            SetDomain(comboBox1.SelectedItem.ToString());
+            SetDomain();
 
             ExPanel.Visible = false;
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            SetDomain(comboBox1.SelectedItem.ToString());
+            string getAddress = OpenFileDialog();
+
+            if (!string.IsNullOrEmpty(getAddress))
+            {
+                textBox1.Text = getAddress;
+            }
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void SearchBox_TextChanged(object sender, EventArgs e)
         {
-            string selected = comboBox1.SelectedItem.ToString();
-            listBox1.Sorted = false;
-
-            if (string.IsNullOrEmpty(textBox2.Text))
+            if (string.IsNullOrEmpty(SearchBox.Text))
             {
-                SetDomain(selected);
-                return;
-            }
-
-            List<string> opetions;
-            listBox1.Items.Clear();
-
-            if (selected == "All")
-            {
-                opetions = AssetNames.Select(x => x.AssetType).ToList();
+                SetDomain();
             }
             else
             {
-                opetions = AssetNames.Where(x => x.Domain == selected).Select(x => x.AssetType).ToList();
+                SetSreach();
             }
+        }
 
-            opetions.Sort();
-
-            int lenght = 2;
-            foreach (var asset in opetions.Where(x => x.StartsWith(textBox2.Text, StringComparison.CurrentCultureIgnoreCase)))
-            {
-                listBox1.Items.Add(asset);
-                lenght++;
-            }
-
-            int tempHeight = (lenght * 22) / 2;
-
-            listBox1.Size = new Size(listBox1.Size.Width, ((int)MathF.Max(ListMaxHeight, tempHeight)));
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetDomain();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -291,11 +297,6 @@ namespace WinFormsApp1
             SetNameField();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(NameField.Text);
-        }
-
         private void VariationBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetNameField();
@@ -304,6 +305,11 @@ namespace WinFormsApp1
         private void VariantBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetNameField();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(NameField.Text);
         }
     }
 }

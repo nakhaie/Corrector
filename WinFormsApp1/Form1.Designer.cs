@@ -63,7 +63,7 @@
             panel1 = new Panel();
             listBox1 = new ListBox();
             comboBox1 = new ComboBox();
-            textBox2 = new TextBox();
+            SearchBox = new TextBox();
             label3 = new Label();
             VerText = new TextBox();
             ExceptionLabel = new Label();
@@ -154,15 +154,15 @@
             comboBox1.TabIndex = 1;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
-            // textBox2
+            // SearchBox
             // 
-            textBox2.Cursor = Cursors.IBeam;
-            textBox2.Location = new Point(74, 70);
-            textBox2.MaxLength = 32;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(180, 23);
-            textBox2.TabIndex = 4;
-            textBox2.TextChanged += textBox2_TextChanged;
+            SearchBox.Cursor = Cursors.IBeam;
+            SearchBox.Location = new Point(74, 70);
+            SearchBox.MaxLength = 32;
+            SearchBox.Name = "SearchBox";
+            SearchBox.Size = new Size(180, 23);
+            SearchBox.TabIndex = 4;
+            SearchBox.TextChanged += SearchBox_TextChanged;
             // 
             // label3
             // 
@@ -347,7 +347,7 @@
             Controls.Add(ExPanel);
             Controls.Add(VerText);
             Controls.Add(label3);
-            Controls.Add(textBox2);
+            Controls.Add(SearchBox);
             Controls.Add(comboBox1);
             Controls.Add(panel1);
             Controls.Add(textBox1);
@@ -586,7 +586,7 @@
         private Panel panel1;
         private ComboBox comboBox1;
         private ListBox listBox1;
-        private TextBox textBox2;
+        private TextBox SearchBox;
         private Label label3;
         private TextBox VerText;
         private Label ExceptionLabel;
