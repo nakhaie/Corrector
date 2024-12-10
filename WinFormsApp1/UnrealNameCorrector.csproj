@@ -9,6 +9,7 @@
 	<IsPublishable>True</IsPublishable>
 	<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
 	<ApplicationIcon>Unreal_Engine_icon-icons.com_56587.ico</ApplicationIcon>
+	<SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
