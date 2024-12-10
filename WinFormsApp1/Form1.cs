@@ -14,6 +14,8 @@ namespace WinFormsApp1
         private string FileExtention;
         private string LastAddress;
 
+        private const int SizeOfUnit = 22;
+
         public string OpenFileDialog()
         {
             var filePath = string.Empty;
@@ -40,6 +42,14 @@ namespace WinFormsApp1
                     //Get the path of specified file
                     filePath = openFileDialog.SafeFileName;
                     LastAddress = openFileDialog.FileName;
+
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        FileExtention = filePath.Split('.').Last();
+                        FileExtention = FileExtention.ToLowerInvariant();
+                        AutoSelection.Checked = FormatsTypes.ContainsKey(FileExtention);
+                    }
+                    
                 }
             }
 
@@ -55,25 +65,39 @@ namespace WinFormsApp1
             listBox1.Sorted = true;
             int tempHeight = 0;
 
-            if (selected == "All")
+            if (AutoSelection.Checked && FormatsTypes.ContainsKey(FileExtention))
             {
-                foreach (var asset in AssetNames)
+                string[] formatlist = FormatsTypes[FileExtention].Split(',');
+
+                foreach (var ext in formatlist)
                 {
-                    listBox1.Items.Add(asset.AssetType);
+                    listBox1.Items.Add(ext);
                 }
 
-                tempHeight = (AssetNames.Count * 22) / 2;
+                tempHeight = (FormatsTypes[FileExtention].Split(',').Length * SizeOfUnit) / 2;
             }
             else
             {
-                int lenght = 2;
-                foreach (var asset in AssetNames.Where(x => x.Domain == selected))
+                if (selected == "All")
                 {
-                    listBox1.Items.Add(asset.AssetType);
-                    lenght++;
-                }
+                    foreach (var asset in AssetNames)
+                    {
+                        listBox1.Items.Add(asset.AssetType);
+                    }
 
-                tempHeight = (lenght * 22) / 2;
+                    tempHeight = (AssetNames.Count * SizeOfUnit) / 2;
+                }
+                else
+                {
+                    int lenght = 2;
+                    foreach (var asset in AssetNames.Where(x => x.Domain == selected))
+                    {
+                        listBox1.Items.Add(asset.AssetType);
+                        lenght++;
+                    }
+
+                    tempHeight = (lenght * SizeOfUnit) / 2;
+                }
             }
 
             listBox1.Size = new Size(listBox1.Size.Width, ((int)MathF.Max(ListMaxHeight, tempHeight)));
@@ -96,11 +120,11 @@ namespace WinFormsApp1
                 lenght++;
             }
 
-            int tempHeight = (lenght * 22) / 2;
+            int tempHeight = (lenght * SizeOfUnit) / 2;
 
             listBox1.Size = new Size(listBox1.Size.Width, ((int)MathF.Max(ListMaxHeight, tempHeight)));
         }
-        
+
         public void SetNameField()
         {
             //Prefix_ModelType_Name_suffix_Variation(A,B,C)_SpcVersion(IIV)_Version(#)
@@ -111,6 +135,7 @@ namespace WinFormsApp1
                 string[] fileNamePiece = textBox1.Text.Split('.');
 
                 FileExtention = fileNamePiece.Last();
+                FileExtention = FileExtention.ToLowerInvariant();
 
                 for (int i = 0; i < fileNamePiece.Length - 1; i++)
                 {
@@ -119,6 +144,7 @@ namespace WinFormsApp1
             }
             else
             {
+                FileExtention = string.Empty;
                 FileName = textBox1.Text;
             }
 
@@ -210,7 +236,7 @@ namespace WinFormsApp1
             }
 
         }
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             ListMaxHeight = listBox1.Size.Height;
@@ -260,6 +286,7 @@ namespace WinFormsApp1
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            AutoSelection.Checked = false;
             SetDomain();
         }
 
@@ -301,6 +328,23 @@ namespace WinFormsApp1
         private void button2_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(NameField.Text);
+        }
+
+        private void AutoSelection_CheckedChanged(object sender, EventArgs e)
+        {
+            if(string.IsNullOrEmpty(textBox1.Text))
+            {
+                return;
+            }
+
+            if (!AutoSelection.Checked)
+            {
+                SetDomain();
+            }
+            else if (!string.IsNullOrEmpty(FileExtention) && FormatsTypes.ContainsKey(FileExtention))
+            {
+                SetDomain();
+            }
         }
     }
 }

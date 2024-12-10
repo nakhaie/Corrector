@@ -73,7 +73,7 @@
             button2 = new Button();
             label2 = new Label();
             label4 = new Label();
-            checkBox1 = new CheckBox();
+            AutoSelection = new CheckBox();
             ClassBox = new TextBox();
             label5 = new Label();
             label6 = new Label();
@@ -254,16 +254,17 @@
             label4.TabIndex = 14;
             label4.Text = "Domain:";
             // 
-            // checkBox1
+            // AutoSelection
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Font = new Font("Segoe UI", 12F);
-            checkBox1.Location = new Point(482, 68);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(129, 25);
-            checkBox1.TabIndex = 15;
-            checkBox1.Text = "Auto Selection";
-            checkBox1.UseVisualStyleBackColor = true;
+            AutoSelection.AutoSize = true;
+            AutoSelection.Font = new Font("Segoe UI", 12F);
+            AutoSelection.Location = new Point(482, 68);
+            AutoSelection.Name = "AutoSelection";
+            AutoSelection.Size = new Size(129, 25);
+            AutoSelection.TabIndex = 15;
+            AutoSelection.Text = "Auto Selection";
+            AutoSelection.UseVisualStyleBackColor = true;
+            AutoSelection.CheckedChanged += AutoSelection_CheckedChanged;
             // 
             // ClassBox
             // 
@@ -338,7 +339,7 @@
             Controls.Add(label6);
             Controls.Add(ClassBox);
             Controls.Add(label5);
-            Controls.Add(checkBox1);
+            Controls.Add(AutoSelection);
             Controls.Add(label4);
             Controls.Add(label2);
             Controls.Add(button2);
@@ -554,28 +555,28 @@
             {new AssetName("Procedural","Procedural Content Generation","PCG_",string.Empty,"PCG_{0}")}
         };
 
-        private readonly Dictionary<string, string> ForamtsTypes = new Dictionary<string, string>
+        private readonly Dictionary<string, string> FormatsTypes = new Dictionary<string, string>
         {
             {"otf", "Font"},
             {"ttf", "Font"},
             {"woff", "Font"},
-            {"mp3","File Media Source"},
-            {"wav","Media Sound Wave"},
-            {"abc","Static Mesh,Geometry Cache,Skeletal Mesh,Skeleton,Animation Sequence"},
-            {"fbx","Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"},
-            {"obj","Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"
+            {"mp3", "File Media Source"},
+            {"wav", "Media Sound Wave"},
+            {"abc", "Static Mesh,Geometry Cache,Skeletal Mesh,Skeleton,Animation Sequence"},
+            {"fbx", "Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"},
+            {"obj", "Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"
                     +"Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"hdr","Texture Cube"},
-            {"jpg","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"hdr", "Texture Cube"},
+            {"jpg", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"png","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"png", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"psd","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"psd", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"tga","Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"tga", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"mtl","Material,Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"mtl", "Material,Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"}
         };
 
@@ -595,7 +596,7 @@
         private Button button2;
         private Label label2;
         private Label label4;
-        private CheckBox checkBox1;
+        private CheckBox AutoSelection;
         private TextBox ClassBox;
         private Label label5;
         private Label label6;
