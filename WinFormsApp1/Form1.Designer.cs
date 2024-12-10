@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1
+﻿namespace UnrealNameCorrector
 {
     public class AssetName
     {
@@ -565,18 +565,18 @@
             {"abc", "Static Mesh,Geometry Cache,Skeletal Mesh,Skeleton,Animation Sequence"},
             {"fbx", "Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"},
             {"obj", "Static Mesh,Material,Skeletal Mesh,Skeleton,Physics Asset,Rig,Animation Sequence"
-                    +"Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+                    +"Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular),"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
             {"hdr", "Texture Cube"},
-            {"jpg", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"jpg", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular),"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"png", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"png", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular),"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"psd", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"psd", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular),"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"tga", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"tga", "Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular),"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"},
-            {"mtl", "Material,Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular)"
+            {"mtl", "Material,Texture (Height),Texture (Light Map),Texture (Mask),Texture (Metallic),Texture (Normal),Texture (Packed),Texture (Roughness),Texture (Specular),"
                     +"Texture,Texture (Alpha/Opacity),Texture (Ambient Occlusion),Texture (Base Color),Texture (Displacement),Texture (Emissive),Texture (Flow Map)"}
         };
 

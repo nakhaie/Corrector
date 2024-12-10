@@ -1,4 +1,4 @@
-namespace WinFormsApp1
+namespace UnrealNameCorrector
 {
     internal static class Program
     {

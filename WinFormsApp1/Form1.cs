@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace WinFormsApp1
+namespace UnrealNameCorrector
 {
     public partial class Form : System.Windows.Forms.Form
     {
@@ -48,6 +48,15 @@ namespace WinFormsApp1
                         FileExtention = filePath.Split('.').Last();
                         FileExtention = FileExtention.ToLowerInvariant();
                         AutoSelection.Checked = FormatsTypes.ContainsKey(FileExtention);
+
+                        if (!AutoSelection.Checked)
+                        {
+                            SetDomain();
+                        }
+                        else if (!string.IsNullOrEmpty(FileExtention) && FormatsTypes.ContainsKey(FileExtention))
+                        {
+                            SetDomain();
+                        }
                     }
                     
                 }
